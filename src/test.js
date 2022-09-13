@@ -1,0 +1,227 @@
+const string= `
+.skin*{box-sizing: border-box;margin: 0;padding: 0;}/*星号影响到外面的按钮*/
+.skin*::after,.skin*::before{box-sizing: border-box;}
+body{
+    
+}
+.skin{
+    position: relative;
+    background: #ffe600;/*所有东西都绝对定位,没有文档流元素,所以背景颜色显示不全*/
+    min-height: 50vh;
+}
+.nose{
+    border: 10px solid red;
+    border-color: black transparent transparent;/*给border四种颜色 transparent使border变透明*/
+    border-bottom: none;/*下面的三角形消失*/
+    width: 0px;/*变成0,border正好是四个三角形*/
+    height: 0px;
+    position: relative;
+    left: 50%;
+    top: 140px;
+    margin-left:-10px ;
+    z-index: 10;/*层叠上下文,把鼻子放最上面,避免被其他污染*/
+}
+@keyframes wave {/*声明一个动画名字为wave*/
+    0%{
+transform: rotate(0deg);
+    }
+    33%{
+transform: rotate(12deg);
+    }
+    66%{
+transform: rotate(-12deg);
+    }
+    100%{
+transform: rotate(0deg);
+    }
+}
+.nose:hover{/*鼠标伪类*/
+    transform-origin: 50% 100%;/*让鼻子以下面为点进行左右摆动,50%左右方向以正中心为基准,100%是上下方向最下方为基准*/
+animation: wave 200ms infinite linear;/*无限的动*/
+}
+.yuan{
+top: -16px;
+position:absolute ;
+width: 20px;
+height: 6px;
+left: -10px;
+border-radius: 14px 14px 0 0 ;/*设置圆,左上角十像素右上角十像素,下面为0*/
+background-color: black;
+}
+.eye{
+    position: absolute;
+    border: 2px solid black;
+    width: 64px;
+    height: 64px;
+    left: 50%;
+    top:100px;
+    margin-left: -32px;
+    background: #2e2e2e;
+    border-radius: 50%;
+}
+.eye::before{/*可以加伪元素,也可以新加元素*/
+    content: '';/*伪元素必须有content 值可以为空*/
+    display: block;
+    border:3px solid #000;
+    width: 30px;/*默认是span内联元素, 要变成块级元素*/
+    height: 30px;
+    background: white;
+    border-radius: 50%;
+    position: relative;
+    left:4px;
+    top: 2px;
+}
+.eye.left{
+    transform: translateX(-100px);/*margin已经用来定位了,所以用transform*/
+}
+.eye.right{
+    transform: translateX(100px);
+}
+.mouth{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    left: 50%;
+    top: 170px;
+    margin-left: -100px;
+}
+.up{
+position: relative;
+top: -20px;
+z-index: 1;
+}
+.lip{
+    border: 5px solid black;
+    height:30px;
+width: 100px;
+position:absolute;
+border-top-color: transparent;
+border-right-color:transparent;
+left: 50%;
+margin-left: -50px;
+background: #ffe600;
+}
+.lip.left{
+border-radius: 0 0 0 50px;
+transform: rotate(-15deg) translateX(-53px);
+}
+.lip.right{
+    border-radius: 0 0 50px 0;
+    transform: rotate(15deg) translateX(53px);
+    }
+    .lip::before{
+        content: '';
+        display: block;
+        height:30px;
+        width: 78px;
+        position: absolute;
+        background: #ffe600;
+        bottom: 0;
+    }
+.lip.left::before{
+    right: -6px;
+}
+.lip.right::before{
+  left: -6px;
+}
+.down{
+    position: absolute;
+    height: 180px;
+    width: 100%;
+    top: 5px;
+overflow: hidden;
+}
+.yuan1{
+border: 3px solid black;
+width: 150px;
+height: 1000px;
+position: absolute;
+bottom: 0;
+left:-25%;
+margin-left: 75px;
+border-radius:75px/300px;
+background:#9b000a ;
+overflow: hidden;
+}
+.yuan3{
+    height: 300px;
+    position: absolute;
+    bottom: -150px;
+    width: 200px;
+   left:50%;
+   margin-left: -100px;
+    border-radius:100px;
+    background: #ff485f ;
+}
+.face{
+    position: absolute;
+    left: 50%;
+    border: 3px solid black;
+    width: 88px;
+    height: 88px;
+    margin-left: -44px;
+    top: 230px;
+    z-index: 2;
+}
+.face.left{
+transform: translateX(-180px);
+border-radius: 50%;
+background: #ff0000;
+}
+.face.right{
+    transform: translateX(180px);
+    border-radius: 50%;
+    background: #ff0000;
+    }
+`
+let n =1 /*s声明n等于1*/
+demo.innerText = string.substr(0,n)/*子字符串从0到n* text是以文本形式展现啊*/
+demo2.innerHTML = string.substr(0,n)/*再写css样式标签*/
+console.log(n)
+let time = 50 /*默认速度为100*/
+const x =()=>{
+    n += 1/*每一秒钟让n加1*/
+    if (n>string.length){
+        window.clearInterval(id)/*用clearinterval对应id就可以取消计数器*/
+        return/*下面的那两句就不用执行了*/
+    }
+    console.log(n + ':' + string.substr(0,n))
+    demo.innerText = string.substr(0,n)
+    demo2.innerHTML = string.substr(0,n)
+    demo.scrollTop = 999999/*把这滚动条往下拉九十九万像素*/
+}
+const pause =  ()=>{
+    window.clearInterval(id)/*把闹钟砸掉*/
+}
+const play = ()=>{
+    return setInterval(x,time)/*等价于setInterval(()=>{
+     x()
+     },time)*/
+}
+let  id =play()
+const slow = ()=>{
+    pause()
+    time = 100
+    id =play()
+}
+const normal = ()=>{
+    pause()
+    time = 75
+    id =play()
+}
+const fast =()=>{
+    pause()
+    time = 10
+    id =play()
+}
+btnPause.onclick = ()=>{
+pause()
+}
+btnPlay.onclick = ()=>{
+    id =play()
+}
+
+btnSlow.onclick = slow
+btnNormal.onclick = normal
+btnFast.onclick = fast
+
